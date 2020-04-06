@@ -24,7 +24,7 @@ module.exports = function(RED) {
         node.on("input", function(msg) {
 		var identifier = this.identifier || msg.topic || null;
 		var fs = require("fs");
-		var filename = "/sys/bus/w1/devices/" + identifier +  "/w1_slave";	
+		var filename = "/sys/bus/w1/devices/" + identifier +  "/w1_slave";
 		var data = fs.readFileSync(filename, "utf8");
 		var re = new RegExp("YES");
 		if (re.test(data)) {
@@ -32,9 +32,9 @@ module.exports = function(RED) {
 			if ( this.format == 1 ) {
 				msg.payload = test[1]/1000;
 			} else {
-				msg.payload = (test[1]/1000 - 32) * (5/9) ;
-			}	
-		} 
+				msg.payload = (test[1]/1000 * 9/5) + 32 ;
+			}
+		}
 		// Read the sensor and update message
 		node.send(msg);
         });
